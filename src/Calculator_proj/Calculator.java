@@ -1,92 +1,59 @@
 package Calculator_proj;
-import java.awt.*;
-import java.awt.event.*;
+import java.util.Scanner;
 
-public class Calculator extends Frame implements ActionListener {
-    // Declare components
-    TextField num1, num2, result;
-    Button addButton, subtractButton, multiplyButton, divideButton;
+public class Calculator {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
 
-    public Calculator() {
-        // Set the layout for the frame
-        setLayout(new FlowLayout());
+        System.out.println("Welcome to the Basic Calculator!");
+        System.out.println("Choose an operation:");
+        System.out.println("1. Addition");
+        System.out.println("2. Subtraction");
+        System.out.println("3. Multiplication");
+        System.out.println("4. Division");
 
-        // Initialize components
-        Label label1 = new Label("Number 1:");
-        Label label2 = new Label("Number 2:");
-        Label label3 = new Label("Result:");
+        System.out.print("Enter your choice (1-4): ");
+        int choice = scanner.nextInt();
 
-        num1 = new TextField(10);
-        num2 = new TextField(10);
-        result = new TextField(15);
-        result.setEditable(false); // Make the result field read-only
+        System.out.print("Enter the first number: ");
+        double num1 = scanner.nextDouble();
 
-        addButton = new Button("Add");
-        subtractButton = new Button("Subtract");
-        multiplyButton = new Button("Multiply");
-        divideButton = new Button("Divide");
+        System.out.print("Enter the second number: ");
+        double num2 = scanner.nextDouble();
 
-        // Add components to the frame
-        add(label1);
-        add(num1);
-        add(label2);
-        add(num2);
-        add(addButton);
-        add(subtractButton);
-        add(multiplyButton);
-        add(divideButton);
-        add(label3);
-        add(result);
+        double result = 0;
+        boolean validOperation = true;
 
-        // Add action listeners
-        addButton.addActionListener(this);
-        subtractButton.addActionListener(this);
-        multiplyButton.addActionListener(this);
-        divideButton.addActionListener(this);
-
-        // Configure the frame
-        setTitle("AWT Simple Calculator");
-        setSize(300, 200);
-        setVisible(true);
-
-        // Close the window when the user clicks the close button
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                System.exit(0);
-            }
-        });
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        try {
-            // Parse input numbers
-            double number1 = Double.parseDouble(num1.getText());
-            double number2 = Double.parseDouble(num2.getText());
-            double resultValue = 0;
-
-            // Perform the appropriate operation based on the button clicked
-            if (e.getSource() == addButton) {
-                resultValue = number1 + number2;
-            } else if (e.getSource() == subtractButton) {
-                resultValue = number1 - number2;
-            } else if (e.getSource() == multiplyButton) {
-                resultValue = number1 * number2;
-            } else if (e.getSource() == divideButton) {
-                if (number2 == 0) {
-                    result.setText("Error: Divide by 0");
-                    return;
+        switch (choice) {
+            case 1:
+                result = num1 + num2;
+                break;
+            case 2:
+                result = num1 - num2;
+                break;
+            case 3:
+                result = num1 * num2;
+                break;
+            case 4:
+                if (num2 != 0) {
+                    result = num1 / num2;
+                } else {
+                    System.out.println("Error: Division by zero is not allowed.");
+                    validOperation = false;
                 }
-                resultValue = number1 / number2;
-            }
-
-            // Display the result
-            result.setText(String.valueOf(resultValue));
-        } catch (NumberFormatException ex) {
-            result.setText("Invalid Input");
+                break;
+            default:
+                System.out.println("Invalid choice. Please select a valid operation.");
+                validOperation = false;
         }
-    }
 
+        if (validOperation) {
+            System.out.println("The result is: " + result);
+        }
+
+        scanner.close();
+    }
+}
     public static void main(String[] args) {
         new Calculator();
     }
