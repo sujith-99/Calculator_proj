@@ -7,7 +7,7 @@ public class Calculator extends Frame implements ActionListener {
     TextField num1, num2, result;
     Button addButton, subtractButton, multiplyButton, divideButton;
 
-    public AWTSimpleCalculator() {
+    public Calculator() {
         // Set the layout for the frame
         setLayout(new FlowLayout());
 
@@ -88,6 +88,6 @@ public class Calculator extends Frame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        new AWTSimpleCalculator();
+        new Calculator();
     }
 }
