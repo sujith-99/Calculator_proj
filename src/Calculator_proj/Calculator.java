@@ -1,68 +1,92 @@
-package Calculator_proj;
+import java.awt.*;
+import java.awt.event.*;
 
-import java.io.IOException;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+public class Calculator extends Frame implements ActionListener {
+    // Declare components
+    TextField num1, num2, result;
+    Button addButton, subtractButton, multiplyButton, divideButton;
 
-// Map the servlet to a URL
-@WebServlet("/CalculatorServlet")
-public class Calculator extends HttpServlet {
-    private static final long serialVersionUID = 1L;
+    public AWTSimpleCalculator() {
+        // Set the layout for the frame
+        setLayout(new FlowLayout());
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException, IOException {
-        // Retrieve parameters from the form
-        String num1Str = request.getParameter("num1");
-        String num2Str = request.getParameter("num2");
-        String operation = request.getParameter("operation");
-        String resultMessage;
+        // Initialize components
+        Label label1 = new Label("Number 1:");
+        Label label2 = new Label("Number 2:");
+        Label label3 = new Label("Result:");
 
-        try {
-            // Convert inputs to numbers
-            double num1 = Double.parseDouble(num1Str);
-            double num2 = Double.parseDouble(num2Str);
-            double result;
+        num1 = new TextField(10);
+        num2 = new TextField(10);
+        result = new TextField(15);
+        result.setEditable(false); // Make the result field read-only
 
-            // Perform the selected operation
-            switch (operation) {
-                case "add":
-                    result = num1 + num2;
-                    resultMessage = "The result of addition is: " + result;
-                    break;
-                case "subtract":
-                    result = num1 - num2;
-                    resultMessage = "The result of subtraction is: " + result;
-                    break;
-                case "multiply":
-                    result = num1 * num2;
-                    resultMessage = "The result of multiplication is: " + result;
-                    break;
-                case "divide":
-                    if (num2 == 0) {
-                        resultMessage = "Error: Division by zero is not allowed.";
-                    } else {
-                        result = num1 / num2;
-                        resultMessage = "The result of division is: " + result;
-                    }
-                    break;
-                default:
-                    resultMessage = "Invalid operation.";
+        addButton = new Button("Add");
+        subtractButton = new Button("Subtract");
+        multiplyButton = new Button("Multiply");
+        divideButton = new Button("Divide");
+
+        // Add components to the frame
+        add(label1);
+        add(num1);
+        add(label2);
+        add(num2);
+        add(addButton);
+        add(subtractButton);
+        add(multiplyButton);
+        add(divideButton);
+        add(label3);
+        add(result);
+
+        // Add action listeners
+        addButton.addActionListener(this);
+        subtractButton.addActionListener(this);
+        multiplyButton.addActionListener(this);
+        divideButton.addActionListener(this);
+
+        // Configure the frame
+        setTitle("AWT Simple Calculator");
+        setSize(300, 200);
+        setVisible(true);
+
+        // Close the window when the user clicks the close button
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                System.exit(0);
             }
-        } catch (NumberFormatException e) {
-            resultMessage = "Error: Invalid number format. Please enter valid numbers.";
-        }
+        });
+    }
 
-        // Set the response content type
-        response.setContentType("text/html");
-        
-        // Display the result to the user
-        response.getWriter().println("<html><body>");
-        response.getWriter().println("<h2>Calculator Result</h2>");
-        response.getWriter().println("<p>" + resultMessage + "</p>");
-        response.getWriter().println("<a href='index.jsp'>Go Back</a>");
-        response.getWriter().println("</body></html>");
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        try {
+            // Parse input numbers
+            double number1 = Double.parseDouble(num1.getText());
+            double number2 = Double.parseDouble(num2.getText());
+            double resultValue = 0;
+
+            // Perform the appropriate operation based on the button clicked
+            if (e.getSource() == addButton) {
+                resultValue = number1 + number2;
+            } else if (e.getSource() == subtractButton) {
+                resultValue = number1 - number2;
+            } else if (e.getSource() == multiplyButton) {
+                resultValue = number1 * number2;
+            } else if (e.getSource() == divideButton) {
+                if (number2 == 0) {
+                    result.setText("Error: Divide by 0");
+                    return;
+                }
+                resultValue = number1 / number2;
+            }
+
+            // Display the result
+            result.setText(String.valueOf(resultValue));
+        } catch (NumberFormatException ex) {
+            result.setText("Invalid Input");
+        }
+    }
+
+    public static void main(String[] args) {
+        new AWTSimpleCalculator();
     }
 }
