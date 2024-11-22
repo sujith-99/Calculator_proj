@@ -54,7 +54,6 @@ public class Calculator {
         scanner.close();
     }
 }
-    public static void main(String[] args) {
+   
         new Calculator();
-    }
 }
