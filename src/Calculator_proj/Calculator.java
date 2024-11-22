@@ -1,4 +1,4 @@
-package Calcculator_proj;
+package Calculator_proj;
 import java.awt.*;
 import java.awt.event.*;
 
